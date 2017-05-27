@@ -3,18 +3,26 @@
 ## Installation
 This project must be cloned on the root of your PrestaShop.
 
- git clone git@github.com:madef/ps-admin-tools.git admin-tools
+```
+git clone git@github.com:madef/ps-admin-tools.git admin-tools
+```
 
 ## Usage
 
 List all available commands:
- php admin-tools/console.php
+```
+php admin-tools/console.php
+```
 
-Install a module
- php admin-tools/console.php module:install -m <module name>
+Install a module:
+```
+php admin-tools/console.php module:install -m <module name>
+```
 
-Get some help about a command
- php admin-tools/console.php help -c module:install
+Get some help about a command:
+```
+php admin-tools/console.php help -c module:install
+```
 
 ## Create your own command
 
@@ -69,9 +77,16 @@ The parametters can have no value (AT_Params::NO_VALUE), an optional value (AT_P
 The parametters can be set multiple time (AT_Params::MULTIPLE_VALUE).
 
 The command is not usable, the cache need to be flushed:
- php admin-tools/console.php admin-tools:cache
+```
+php admin-tools/console.php admin-tools:cache
+```
 
 
 Now you can try your command:
- php admin-tools/console.php company:hello
- php admin-tools/console.php company:hello -s 'An other message'
+```
+php admin-tools/console.php company:hello
+```
+
+```
+php admin-tools/console.php company:hello -s 'An other message'
+```
