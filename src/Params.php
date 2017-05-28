@@ -168,7 +168,7 @@ class AT_Params
 
         // Validate parameters
         foreach ($params as $p) {
-            if (!isset($merged[$p[0]])) {
+            if (!array_key_exists($p[0], $merged)) {
                 if ($p[2] & self::REQUIRED_PARAM) {
                     throw new Exception("Parameter « {$p[0]} » is required.");
                 }
