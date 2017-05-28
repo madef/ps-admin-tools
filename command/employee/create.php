@@ -115,7 +115,7 @@ class AT_Employee_Create extends AT_Command_Abstract
             );
         }
 
-        $this->normal($lang);
+        $this->success("Employee #{$employee->id} was created.");
     }
 
     protected function getLangIdByIso($isoCode)
