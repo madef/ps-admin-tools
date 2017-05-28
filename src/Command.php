@@ -58,6 +58,17 @@ class AT_Command
         }
 
         if (!isset($this->commands[$command])) {
+            // Try to flush data
+            $this->refreshCache();
+            $this->commands = json_decode(
+                file_get_contents(
+                    dirname(__FILE__).'/../cache/commands.json'
+                ),
+                true
+            );
+        }
+
+        if (!isset($this->commands[$command])) {
             AT_Message::getInstance()->error('Unknow command « '.$command.' ».');
             die(2);
         }
