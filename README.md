@@ -24,6 +24,18 @@ Get some help about a command:
 php admin-tools/console.php help -c module:install
 ```
 
+## Available commands
+
+* admin-tools:cache  Flush admin-tools cache
+* help  Get help for a command
+* employee:create  Create employee
+* module:enable  Enable module
+* module:install  Install module
+* module:uninstall  Uninstall module
+* module:upgrade  Upgrade module
+* profile:access  Manage access for profile
+* profile:create  Create profile
+
 ## Create your own command
 
 The command are php classes put on a subfolder of command directory.
