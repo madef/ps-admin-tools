@@ -116,7 +116,7 @@ class AT_Profile_Access extends AT_Command_Abstract
             && property_exists($params, 'undisplay')
         ) {
             $this->fatal(
-                "You cannot add and remove display rigth.",
+                "You cannot add and remove display right.",
                 5
             );
         }
@@ -125,7 +125,7 @@ class AT_Profile_Access extends AT_Command_Abstract
             && property_exists($params, 'unadd')
         ) {
             $this->fatal(
-                "You cannot add and remove add rigth.",
+                "You cannot add and remove add right.",
                 5
             );
         }
@@ -134,7 +134,7 @@ class AT_Profile_Access extends AT_Command_Abstract
             && property_exists($params, 'unedit')
         ) {
             $this->fatal(
-                "You cannot add and remove edit rigth.",
+                "You cannot add and remove edit right.",
                 5
             );
         }
@@ -143,7 +143,7 @@ class AT_Profile_Access extends AT_Command_Abstract
             && property_exists($params, 'unremove')
         ) {
             $this->fatal(
-                "You cannot add and remove remove rigth.",
+                "You cannot add and remove remove right.",
                 5
             );
         }
@@ -256,7 +256,7 @@ class AT_Profile_Access extends AT_Command_Abstract
             || property_exists($params, 'unadd')
         ) {
             $this->fatal(
-                "You cannot add or remove add rigth for module. Use edit instead.",
+                "You cannot add or remove add right for module. Use edit instead.",
                 10
             );
         }
