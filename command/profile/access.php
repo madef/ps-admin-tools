@@ -159,93 +159,95 @@ class AT_Profile_Access extends AT_Command_Abstract
 
     protected function processTab($params, $profile)
     {
-        $tab = $this->getTabId($params->tab);
-        if (!$tab) {
+        $tabs = $this->getTabIds($params->tab);
+        if (empty($tabs)) {
             $this->fatal(
                 "« {$params->tab} » is not a valid tab class name.",
                 6
             );
         }
 
-        $exists = Db::getInstance()->getValue('SELECT count(*) FROM `'._DB_PREFIX_.'access` WHERE `id_profile` = '.(int)$profile.' AND `id_tab` = '.(int)$tab);
-        if ($exists) {
-            $result = true;
-            if (property_exists($params, 'display') || property_exists($params, 'undisplay')) {
-                $result &= Db::getInstance()->execute(
-                    'UPDATE `'._DB_PREFIX_.'access`
-                    SET
-                        `view` = '.(property_exists($params, 'display') ? 1 : 0).'
-                    WHERE
-                    `id_profile` = '.(int)$profile.'
-                    AND
-                    `id_tab` = '.(int)$tab
-                );
-            }
-            if (property_exists($params, 'add') || property_exists($params, 'unadd')) {
-                $result &= Db::getInstance()->execute(
-                    'UPDATE `'._DB_PREFIX_.'access`
-                    SET
-                        `add` = '.(property_exists($params, 'add') ? 1 : 0).'
-                    WHERE
-                    `id_profile` = '.(int)$profile.'
-                    AND
-                    `id_tab` = '.(int)$tab
-                );
-            }
-            if (property_exists($params, 'edit') || property_exists($params, 'unedit')) {
-                $result &= Db::getInstance()->execute(
-                    'UPDATE `'._DB_PREFIX_.'access`
-                    SET
-                        `edit` = '.(property_exists($params, 'edit') ? 1 : 0).'
-                    WHERE
-                    `id_profile` = '.(int)$profile.'
-                    AND
-                    `id_tab` = '.(int)$tab
-                );
-            }
-            if (property_exists($params, 'remove') || property_exists($params, 'unremove')) {
-                $result &= Db::getInstance()->execute(
-                    'UPDATE `'._DB_PREFIX_.'access`
-                    SET
-                        `delete` = '.(property_exists($params, 'remove') ? 1 : 0).'
-                    WHERE
-                    `id_profile` = '.(int)$profile.'
-                    AND
-                    `id_tab` = '.(int)$tab
-                );
-            }
+        foreach ($tabs as $tab) {
+            $exists = Db::getInstance()->getValue('SELECT count(*) FROM `'._DB_PREFIX_.'access` WHERE `id_profile` = '.(int)$profile.' AND `id_tab` = '.(int)$tab);
+            if ($exists) {
+                $result = true;
+                if (property_exists($params, 'display') || property_exists($params, 'undisplay')) {
+                    $result &= Db::getInstance()->execute(
+                        'UPDATE `'._DB_PREFIX_.'access`
+                        SET
+                            `view` = '.(property_exists($params, 'display') ? 1 : 0).'
+                        WHERE
+                        `id_profile` = '.(int)$profile.'
+                        AND
+                        `id_tab` = '.(int)$tab
+                    );
+                }
+                if (property_exists($params, 'add') || property_exists($params, 'unadd')) {
+                    $result &= Db::getInstance()->execute(
+                        'UPDATE `'._DB_PREFIX_.'access`
+                        SET
+                            `add` = '.(property_exists($params, 'add') ? 1 : 0).'
+                        WHERE
+                        `id_profile` = '.(int)$profile.'
+                        AND
+                        `id_tab` = '.(int)$tab
+                    );
+                }
+                if (property_exists($params, 'edit') || property_exists($params, 'unedit')) {
+                    $result &= Db::getInstance()->execute(
+                        'UPDATE `'._DB_PREFIX_.'access`
+                        SET
+                            `edit` = '.(property_exists($params, 'edit') ? 1 : 0).'
+                        WHERE
+                        `id_profile` = '.(int)$profile.'
+                        AND
+                        `id_tab` = '.(int)$tab
+                    );
+                }
+                if (property_exists($params, 'remove') || property_exists($params, 'unremove')) {
+                    $result &= Db::getInstance()->execute(
+                        'UPDATE `'._DB_PREFIX_.'access`
+                        SET
+                            `delete` = '.(property_exists($params, 'remove') ? 1 : 0).'
+                        WHERE
+                        `id_profile` = '.(int)$profile.'
+                        AND
+                        `id_tab` = '.(int)$tab
+                    );
+                }
 
-            if (!$result) {
-                $this->fatal(
-                    "Error durring sql query.",
-                    8
+                if (!$result) {
+                    $this->fatal(
+                        "Error durring sql query.",
+                        8
+                    );
+                }
+            } else {
+                $result = Db::getInstance()->execute(
+                    'INSERT INTO `'._DB_PREFIX_.'access`
+                    SET
+                        `id_profile` = '.(int)$profile.',
+                        `id_tab` = '.(int)$tab.',
+                        `view` = '.(property_exists($params, 'display') ? 1 : 0).',
+                        `add` = '.(property_exists($params, 'add') ? 1 : 0).',
+                        `edit` = '.(property_exists($params, 'edit') ? 1 : 0).',
+                        `delete` = '.(property_exists($params, 'remove') ? 1 : 0)
                 );
-            }
-        } else {
-            $result = Db::getInstance()->execute(
-                'INSERT INTO `'._DB_PREFIX_.'access`
-                SET
-                    `id_profile` = '.(int)$profile.',
-                    `id_tab` = '.(int)$tab.',
-                    `view` = '.(property_exists($params, 'display') ? 1 : 0).',
-                    `add` = '.(property_exists($params, 'add') ? 1 : 0).',
-                    `edit` = '.(property_exists($params, 'edit') ? 1 : 0).',
-                    `delete` = '.(property_exists($params, 'remove') ? 1 : 0)
-            );
 
-            if (!$result) {
-                $this->fatal(
-                    "Error durring sql query.",
-                    9
-                );
+                if (!$result) {
+                    $this->fatal(
+                        "Error durring sql query.",
+                        9
+                    );
+                }
             }
         }
     }
 
     protected function processModule($params, $profile)
     {
-        $module = $this->getModuleId($params->tab);
-        if (!$module) {
+        $modules = $this->getModuleIds($params->tab);
+        if (empty($modules)) {
             $this->fatal(
                 "« {$params->tab} » is not a valid module name.",
                 7
@@ -261,81 +263,97 @@ class AT_Profile_Access extends AT_Command_Abstract
             );
         }
 
-        $exists = Db::getInstance()->getValue('SELECT count(*) FROM `'._DB_PREFIX_.'module_access` WHERE `id_profile` = '.(int)$profile.' AND `id_module` = '.(int)$module);
-        if ($exists) {
-            $result = true;
-            if (property_exists($params, 'display') || property_exists($params, 'undisplay')) {
-                $result &= Db::getInstance()->execute(
-                    'UPDATE `'._DB_PREFIX_.'module_access`
-                    SET
-                        `view` = '.(property_exists($params, 'display') ? 1 : 0).'
-                    WHERE
-                    `id_profile` = '.(int)$profile.'
-                    AND
-                    `id_module` = '.(int)$module
-                );
-            }
-            if (property_exists($params, 'edit') || property_exists($params, 'unedit')) {
-                $result &= Db::getInstance()->execute(
-                    'UPDATE `'._DB_PREFIX_.'module_access`
-                    SET
-                        `configure` = '.(property_exists($params, 'edit') ? 1 : 0).'
-                    WHERE
-                    `id_profile` = '.(int)$profile.'
-                    AND
-                    `id_module` = '.(int)$module
-                );
-            }
-            if (property_exists($params, 'remove') || property_exists($params, 'unremove')) {
-                $result &= Db::getInstance()->execute(
-                    'UPDATE `'._DB_PREFIX_.'module_access`
-                    SET
-                        `unstall` = '.(property_exists($params, 'remove') ? 1 : 0).'
-                    WHERE
-                    `id_profile` = '.(int)$profile.'
-                    AND
-                    `id_module` = '.(int)$module
-                );
-            }
+        foreach ($modules as $module) {
+            $exists = Db::getInstance()->getValue('SELECT count(*) FROM `'._DB_PREFIX_.'module_access` WHERE `id_profile` = '.(int)$profile.' AND `id_module` = '.(int)$module);
+            if ($exists) {
+                $result = true;
+                if (property_exists($params, 'display') || property_exists($params, 'undisplay')) {
+                    $result &= Db::getInstance()->execute(
+                        'UPDATE `'._DB_PREFIX_.'module_access`
+                        SET
+                            `view` = '.(property_exists($params, 'display') ? 1 : 0).'
+                        WHERE
+                        `id_profile` = '.(int)$profile.'
+                        AND
+                        `id_module` = '.(int)$module
+                    );
+                }
+                if (property_exists($params, 'edit') || property_exists($params, 'unedit')) {
+                    $result &= Db::getInstance()->execute(
+                        'UPDATE `'._DB_PREFIX_.'module_access`
+                        SET
+                            `configure` = '.(property_exists($params, 'edit') ? 1 : 0).'
+                        WHERE
+                        `id_profile` = '.(int)$profile.'
+                        AND
+                        `id_module` = '.(int)$module
+                    );
+                }
+                if (property_exists($params, 'remove') || property_exists($params, 'unremove')) {
+                    $result &= Db::getInstance()->execute(
+                        'UPDATE `'._DB_PREFIX_.'module_access`
+                        SET
+                            `unstall` = '.(property_exists($params, 'remove') ? 1 : 0).'
+                        WHERE
+                        `id_profile` = '.(int)$profile.'
+                        AND
+                        `id_module` = '.(int)$module
+                    );
+                }
 
-            if (!$result) {
-                $this->fatal(
-                    "Error durring sql query.",
-                    8
+                if (!$result) {
+                    $this->fatal(
+                        "Error durring sql query.",
+                        8
+                    );
+                }
+            } else {
+                $result = Db::getInstance()->execute(
+                    'INSERT INTO `'._DB_PREFIX_.'module_access`
+                    SET
+                        `id_profile` = '.(int)$profile.',
+                        `id_module` = '.(int)$module.',
+                        `view` = '.(property_exists($params, 'display') ? 1 : 0).',
+                        `configure` = '.(property_exists($params, 'edit') ? 1 : 0).',
+                        `uninstall` = '.(property_exists($params, 'remove') ? 1 : 0)
                 );
-            }
-        } else {
-            $result = Db::getInstance()->execute(
-                'INSERT INTO `'._DB_PREFIX_.'module_access`
-                SET
-                    `id_profile` = '.(int)$profile.',
-                    `id_module` = '.(int)$module.',
-                    `view` = '.(property_exists($params, 'display') ? 1 : 0).',
-                    `configure` = '.(property_exists($params, 'edit') ? 1 : 0).',
-                    `uninstall` = '.(property_exists($params, 'remove') ? 1 : 0)
-            );
 
-            if (!$result) {
-                $this->fatal(
-                    "Error durring sql query.",
-                    9
-                );
+                if (!$result) {
+                    $this->fatal(
+                        "Error durring sql query.",
+                        9
+                    );
+                }
             }
         }
     }
 
-    protected function getTabId($class)
+    protected function getTabIds($class)
     {
-        $id = Db::getInstance()->getValue('SELECT `id_tab` FROM `'._DB_PREFIX_.'tab` WHERE `class_name` like \''.pSQL($class).'\'');
+        $results = Db::getInstance()->executeS('SELECT `id_tab`, `class_name` FROM `'._DB_PREFIX_.'tab` WHERE `class_name` like \''.pSQL($class).'\'');
+        $ids = array();
 
-        return $id;
+        $this->normal('List of tab concerned:');
+        foreach ($results as $result) {
+            $ids[] = $result['id_tab'];
+            $this->normal(' - '.$result['class_name']);
+        }
+
+        return $ids;
     }
 
-    protected function getModuleId($name)
+    protected function getModuleIds($name)
     {
-        $id = Db::getInstance()->getValue('SELECT `id_module` FROM `'._DB_PREFIX_.'module` WHERE `name` like \''.pSQL($name).'\'');
+        $results = Db::getInstance()->executeS('SELECT `id_module`, `name` FROM `'._DB_PREFIX_.'module` WHERE `name` like \''.pSQL($name).'\'');
+        $ids = array();
 
-        return $id;
+        $this->normal('List of module concerned:');
+        foreach ($results as $result) {
+            $ids[] = $result['id_module'];
+            $this->normal(' - '.$result['name']);
+        }
+
+        return $ids;
     }
 
     protected function getProfileIdByName($name)
