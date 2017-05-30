@@ -293,7 +293,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                     $result &= Db::getInstance()->execute(
                         'UPDATE `'._DB_PREFIX_.'module_access`
                         SET
-                            `unstall` = '.(property_exists($params, 'remove') ? 1 : 0).'
+                            `uninstall` = '.(property_exists($params, 'remove') ? 1 : 0).'
                         WHERE
                         `id_profile` = '.(int)$profile.'
                         AND
