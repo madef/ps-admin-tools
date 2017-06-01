@@ -108,6 +108,7 @@ class AT_Employee_Create extends AT_Command_Abstract
         $employee->email = $params->email;
         $employee->id_profile = $profile;
         $employee->id_lang = $lang;
+        $employee->default_tab = 1;
         if (!$employee->save()) {
             $this->fatal(
                 "Employee not created.",
