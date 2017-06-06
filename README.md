@@ -27,12 +27,14 @@ php admin-tools/console.php help -c module:install
 ## Available commands
 
 * admin-tools:cache  Flush admin-tools cache
-* help  Get help for a command
+* configuration:set Create or update configuration value
 * employee:create  Create employee
+* help  Get help for a command
 * module:enable  Enable module
 * module:install  Install module
 * module:uninstall  Uninstall module
 * module:upgrade  Upgrade module
+* objectmodel:add  Add object
 * profile:access  Manage access for profile
 * profile:create  Create profile
 
