@@ -76,25 +76,33 @@ class AT_Module_Install extends AT_Command_Abstract
 
         if (empty($params->shop)) {
             foreach (Shop::getShopsCollection(false) as $shop) {
-                Db::getInstance()->insert(
-                    'module_shop',
-                    array(
-                        'id_module' => (int) $module->id,
-                        'id_shop' => (int) $shop->id,
-                        'enable_device' => 7,
-                    )
-                );
+                try {
+                    Db::getInstance()->insert(
+                        'module_shop',
+                        array(
+                            'id_module' => (int) $module->id,
+                            'id_shop' => (int) $shop->id,
+                            'enable_device' => 7,
+                        )
+                    );
+                } catch (Exception $e) {
+                    $this->note("Module « {$params->module} » is already exists on table module_shop.");
+                }
             }
         } else {
             foreach ($params->shop as $shop) {
-                Db::getInstance()->insert(
-                    'module_shop',
-                    array(
-                        'id_module' => (int) $module->id,
-                        'id_shop' => (int) $shop,
-                        'enable_device' => 7,
-                    )
-                );
+                try {
+                    Db::getInstance()->insert(
+                        'module_shop',
+                        array(
+                            'id_module' => (int) $module->id,
+                            'id_shop' => (int) $shop,
+                            'enable_device' => 7,
+                        )
+                    );
+                } catch (Exception $e) {
+                    $this->note("Module « {$params->module} » is already exists on table module_shop.");
+                }
             }
         }
 
