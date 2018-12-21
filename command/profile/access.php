@@ -503,7 +503,7 @@ class AT_Profile_Access extends AT_Command_Abstract
         $this->normal('List of tab concerned:');
         foreach ($results as $result) {
             $ids[] = $result['id_tab'];
-            $classes[] = $class;
+            $classes[] = $result['class_name'];
             $this->normal(' - '.$result['class_name']);
         }
 
