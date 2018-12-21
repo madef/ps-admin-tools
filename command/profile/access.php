@@ -252,7 +252,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         'INSERT IGNORE INTO `'._DB_PREFIX_.'access`
                         SET
                         `id_profile` = '.(int)$profile.',
-                        `id_authorization_role` = '.$this->getTabRole($tab, 'READ')
+                        `id_authorization_role` = "'.$this->getTabRole($tab, 'READ').'"'
                     );
                 }
                 if (property_exists($params, 'undisplay')) {
@@ -261,7 +261,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         WHERE
                         `id_profile` = '.(int)$profile.'
                         AND
-                        `id_authorization_role` = '.$this->getTabRole($tab, 'READ')
+                        `id_authorization_role` = "'.$this->getTabRole($tab, 'READ').'"'
                     );
                 }
                 if (property_exists($params, 'add')) {
@@ -269,7 +269,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         'INSERT IGNORE INTO `'._DB_PREFIX_.'access`
                         SET
                         `id_profile` = '.(int)$profile.',
-                        `id_authorization_role` = '.$this->getTabRole($tab, 'CREATE')
+                        `id_authorization_role` = "'.$this->getTabRole($tab, 'CREATE').'"'
                     );
                 }
                 if (property_exists($params, 'unadd')) {
@@ -278,7 +278,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         WHERE
                         `id_profile` = '.(int)$profile.'
                         AND
-                        `id_authorization_role` = '.$this->getTabRole($tab, 'CREATE')
+                        `id_authorization_role` = "'.$this->getTabRole($tab, 'CREATE').'"'
                     );
                 }
                 if (property_exists($params, 'edit')) {
@@ -286,7 +286,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         'INSERT IGNORE INTO `'._DB_PREFIX_.'access`
                         SET
                         `id_profile` = '.(int)$profile.',
-                        `id_authorization_role` = '.$this->getTabRole($tab, 'UPDATE')
+                        `id_authorization_role` = "'.$this->getTabRole($tab, 'UPDATE').'"'
                     );
                 }
                 if (property_exists($params, 'unedit')) {
@@ -295,7 +295,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         WHERE
                         `id_profile` = '.(int)$profile.'
                         AND
-                        `id_authorization_role` = '.$this->getTabRole($tab, 'UPDATE')
+                        `id_authorization_role` = "'.$this->getTabRole($tab, 'UPDATE').'"'
                     );
                 }
                 if (property_exists($params, 'remove')) {
@@ -303,7 +303,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         'INSERT IGNORE INTO `'._DB_PREFIX_.'access`
                         SET
                         `id_profile` = '.(int)$profile.',
-                        `id_authorization_role` = '.$this->getTabRole($tab, 'DELETE')
+                        `id_authorization_role` = "'.$this->getTabRole($tab, 'DELETE').'"'
                     );
                 }
                 if (property_exists($params, 'unremove')) {
@@ -312,7 +312,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         WHERE
                         `id_profile` = '.(int)$profile.'
                         AND
-                        `id_authorization_role` = '.$this->getTabRole($tab, 'DELETE')
+                        `id_authorization_role` = "'.$this->getTabRole($tab, 'DELETE').'"'
                     );
                 }
             }
@@ -427,7 +427,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         'INSERT IGNORE INTO `'._DB_PREFIX_.'module_access`
                         SET
                         `id_profile` = '.(int)$profile.',
-                        `id_authorization_role` = '.$this->getModuleRole($module, 'READ')
+                        `id_authorization_role` = "'.$this->getModuleRole($module, 'READ').'"'
                     );
                 }
                 if (property_exists($params, 'undisplay')) {
@@ -436,7 +436,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         WHERE
                         `id_profile` = '.(int)$profile.'
                         AND
-                        `id_authorization_role` = '.$this->getModuleRole($module, 'READ')
+                        `id_authorization_role` = "'.$this->getModuleRole($module, 'READ').'"'
                     );
                 }
                 if (property_exists($params, 'add')) {
@@ -444,7 +444,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         'INSERT IGNORE INTO `'._DB_PREFIX_.'module_access`
                         SET
                         `id_profile` = '.(int)$profile.',
-                        `id_authorization_role` = '.$this->getModuleRole($module, 'CREATE')
+                        `id_authorization_role` = "'.$this->getModuleRole($module, 'CREATE').'"'
                     );
                 }
                 if (property_exists($params, 'unadd')) {
@@ -453,7 +453,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         WHERE
                         `id_profile` = '.(int)$profile.'
                         AND
-                        `id_authorization_role` = '.$this->getModuleRole($module, 'CREATE')
+                        `id_authorization_role` = "'.$this->getModuleRole($module, 'CREATE').'"'
                     );
                 }
                 if (property_exists($params, 'edit')) {
@@ -461,7 +461,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         'INSERT IGNORE INTO `'._DB_PREFIX_.'module_access`
                         SET
                         `id_profile` = '.(int)$profile.',
-                        `id_authorization_role` = '.$this->getModuleRole($module, 'UPDATE')
+                        `id_authorization_role` = "'.$this->getModuleRole($module, 'UPDATE').'"'
                     );
                 }
                 if (property_exists($params, 'unedit')) {
@@ -470,7 +470,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         WHERE
                         `id_profile` = '.(int)$profile.'
                         AND
-                        `id_authorization_role` = '.$this->getModuleRole($module, 'UPDATE')
+                        `id_authorization_role` = "'.$this->getModuleRole($module, 'UPDATE').'"'
                     );
                 }
                 if (property_exists($params, 'remove')) {
@@ -478,7 +478,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         'INSERT IGNORE INTO `'._DB_PREFIX_.'module_access`
                         SET
                         `id_profile` = '.(int)$profile.',
-                        `id_authorization_role` = '.$this->getModuleRole($module, 'DELETE')
+                        `id_authorization_role` = "'.$this->getModuleRole($module, 'DELETE').'"'
                     );
                 }
                 if (property_exists($params, 'unremove')) {
@@ -487,7 +487,7 @@ class AT_Profile_Access extends AT_Command_Abstract
                         WHERE
                         `id_profile` = '.(int)$profile.'
                         AND
-                        `id_authorization_role` = '.$this->getModuleRole($module, 'DELETE')
+                        `id_authorization_role` = "'.$this->getModuleRole($module, 'DELETE').'"'
                     );
                 }
             }
