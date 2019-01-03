@@ -321,20 +321,42 @@ class AT_Profile_Access extends AT_Command_Abstract
 
     protected function getTabRole($tab, $action)
     {
-        return Db::getInstance()->getValue(
+        $roleId = (int) Db::getInstance()->getValue(
             'SELECT `id_authorization_role`
             FROM `'._DB_PREFIX_.'authorization_role`
             WHERE `slug` = "ROLE_MOD_TAB_'.strtoupper($tab).'_'.$action.'"'
         );
+
+        if (!$roleId) {
+            Db::getInstance()->getValue(
+                'INSERT INTO `'._DB_PREFIX_.'authorization_role`
+                SET `slug` = "ROLE_MOD_TAB_'.strtoupper($tab).'_'.$action.'"'
+            );
+
+            return $this->getTabRole($tab, $action);
+        }
+
+        return $roleId;
     }
 
     protected function getModuleRole($module, $action)
     {
-        return Db::getInstance()->getValue(
+        $roleId = (int) Db::getInstance()->getValue(
             'SELECT `id_authorization_role`
             FROM `'._DB_PREFIX_.'authorization_role`
             WHERE `slug` = "ROLE_MOD_MODULE_'.strtoupper($module).'_'.$action.'"'
         );
+
+        if (!$roleId) {
+            Db::getInstance()->getValue(
+                'INSERT INTO `'._DB_PREFIX_.'authorization_role`
+                SET `slug` = "ROLE_MOD_MODULE_'.strtoupper($module).'_'.$action.'"'
+            );
+
+            return $this->getModuleRole($module, $action);
+        }
+
+        return $roleId;
     }
 
     protected function processModule($params, $profile)
