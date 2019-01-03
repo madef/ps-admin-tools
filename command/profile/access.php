@@ -328,7 +328,7 @@ class AT_Profile_Access extends AT_Command_Abstract
         );
 
         if (!$roleId) {
-            Db::getInstance()->getValue(
+            Db::getInstance()->execute(
                 'INSERT INTO `'._DB_PREFIX_.'authorization_role`
                 SET `slug` = "ROLE_MOD_TAB_'.strtoupper($tab).'_'.$action.'"'
             );
@@ -348,7 +348,7 @@ class AT_Profile_Access extends AT_Command_Abstract
         );
 
         if (!$roleId) {
-            Db::getInstance()->getValue(
+            Db::getInstance()->execute(
                 'INSERT INTO `'._DB_PREFIX_.'authorization_role`
                 SET `slug` = "ROLE_MOD_MODULE_'.strtoupper($module).'_'.$action.'"'
             );
