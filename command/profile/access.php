@@ -148,7 +148,7 @@ class AT_Profile_Access extends AT_Command_Abstract
             );
         }
 
-        if (strpos($params->tab, 'Admin') === 0) {
+        if (strpos($params->tab, 'Admin') === 0 || strtoupper($params->tab) == $params->tab) {
             $this->processTab($params, $profile);
         } else {
             $this->processModule($params, $profile);
