@@ -524,7 +524,7 @@ class AT_Profile_Access extends AT_Command_Abstract
 
     protected function getChilds($ids)
     {
-        $ids = array_map('inval', $ids);
+        $ids = array_map('intval', $ids);
 
         if (empty($ids)) {
             return array();
@@ -551,12 +551,16 @@ class AT_Profile_Access extends AT_Command_Abstract
         $this->normal('List of tab concerned:');
         foreach ($results as $result) {
             $ids[] = $result['id_tab'];
-            $classes[] = $result['class_name'];
-            $this->normal(' - '.$result['class_name']);
         }
 
-        if (property_exists($params, 'recursive') || property_exists($params, 'recursive')) {
+        if (property_exists($params, 'recursive')) {
             $results = array_merge($results, $this->getChilds($ids));
+        }
+
+        foreach ($results as $result) {
+            $ids[] = $result['id_tab'];
+            $classes[] = $result['class_name'];
+            $this->normal(' - '.$result['class_name']);
         }
 
         if (version_compare(_PS_VERSION_, '1.7', '<')) {
@@ -575,12 +579,16 @@ class AT_Profile_Access extends AT_Command_Abstract
         $this->normal('List of module concerned:');
         foreach ($results as $result) {
             $ids[] = $result['id_module'];
-            $modules[] = $result['name'];
-            $this->normal(' - '.$result['name']);
         }
 
-        if (property_exists($params, 'recursive') || property_exists($params, 'recursive')) {
+        if (property_exists($params, 'recursive')) {
             $results = array_merge($results, $this->getChilds($ids));
+        }
+
+        foreach ($results as $result) {
+            $ids[] = $result['id_module'];
+            $modules[] = $result['name'];
+            $this->normal(' - '.$result['name']);
         }
 
         if (version_compare(_PS_VERSION_, '1.7', '<')) {
