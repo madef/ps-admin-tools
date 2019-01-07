@@ -98,6 +98,12 @@ class AT_Profile_Access extends AT_Command_Abstract
                 AT_Params::NO_VALUE,
                 'Remove remove right',
             ),
+            array(
+                'recursive',
+                'X',
+                AT_Params::NO_VALUE,
+                'Apply recursively',
+            ),
         );
     }
 
@@ -159,7 +165,7 @@ class AT_Profile_Access extends AT_Command_Abstract
 
     protected function processTab($params, $profile)
     {
-        $tabs = $this->getTabs($params->tab);
+        $tabs = $this->getTabs($params->tab, $params);
         if (empty($tabs)) {
             $this->fatal(
                 "« {$params->tab} » is not a valid tab class name.",
@@ -361,7 +367,7 @@ class AT_Profile_Access extends AT_Command_Abstract
 
     protected function processModule($params, $profile)
     {
-        $modules = $this->getModules($params->tab);
+        $modules = $this->getModules($params->tab, $params);
         if (empty($modules)) {
             $this->fatal(
                 "« {$params->tab} » is not a valid module name.",
@@ -516,7 +522,27 @@ class AT_Profile_Access extends AT_Command_Abstract
         }
     }
 
-    protected function getTabs($class)
+    protected function getChilds($ids)
+    {
+        $ids = array_map('inval', $ids);
+
+        if (empty($ids)) {
+            return array();
+        }
+
+        $results = Db::getInstance()->executeS('SELECT `id_tab`, `class_name` FROM `'._DB_PREFIX_.'tab` WHERE `id_parent` IN ('.implode(',', $ids).')');
+
+        $ids = array();
+        foreach ($results as $result) {
+            $ids[] = $result['id_tab'];
+        }
+
+        $results = array_merge($results, $this->getChilds($ids));
+
+        return $results;
+    }
+
+    protected function getTabs($class, $params)
     {
         $results = Db::getInstance()->executeS('SELECT `id_tab`, `class_name` FROM `'._DB_PREFIX_.'tab` WHERE `class_name` like \''.pSQL($class).'\'');
         $ids = array();
@@ -529,6 +555,10 @@ class AT_Profile_Access extends AT_Command_Abstract
             $this->normal(' - '.$result['class_name']);
         }
 
+        if (property_exists($params, 'recursive') || property_exists($params, 'recursive')) {
+            $results = array_merge($results, $this->getChilds($ids));
+        }
+
         if (version_compare(_PS_VERSION_, '1.7', '<')) {
             return $ids;
         } else {
@@ -536,7 +566,7 @@ class AT_Profile_Access extends AT_Command_Abstract
         }
     }
 
-    protected function getModules($name)
+    protected function getModules($name, $params)
     {
         $results = Db::getInstance()->executeS('SELECT `id_module`, `name` FROM `'._DB_PREFIX_.'module` WHERE `name` like \''.pSQL($name).'\'');
         $ids = array();
@@ -547,6 +577,10 @@ class AT_Profile_Access extends AT_Command_Abstract
             $ids[] = $result['id_module'];
             $modules[] = $result['name'];
             $this->normal(' - '.$result['name']);
+        }
+
+        if (property_exists($params, 'recursive') || property_exists($params, 'recursive')) {
+            $results = array_merge($results, $this->getChilds($ids));
         }
 
         if (version_compare(_PS_VERSION_, '1.7', '<')) {
